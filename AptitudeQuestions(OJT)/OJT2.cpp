@@ -1,26 +1,45 @@
 #include <iostream>
 #include <vector>
-#include <algorithm>
+#include <climits>
 
 int main()
 {
-    // Example usage
+    // Example candies and extraCandies
     std::vector<int> candies = {2, 3, 5, 1, 3};
     int extraCandies = 3;
 
-    // Find the maximum number of candies among all kids
-    int maxCandies = *std::max_element(candies.begin(), candies.end());
+    int maxCandies = INT_MIN;
+    std::vector<bool> ans;
 
-    // Use a lambda expression to check if each kid can have the greatest number of candies
-    std::vector<bool> result;
-    std::for_each(candies.begin(), candies.end(), [&](int candy)
-                  { result.push_back(candy + extraCandies >= maxCandies); });
-
-    // Display the result using a range-based for loop
-    std::cout << "Result: [";
-    for (bool canHaveGreatest : result)
+    // Find the maximum number of candies
+    for (int i = 0; i < candies.size(); ++i)
     {
-        std::cout << (canHaveGreatest ? "true" : "false") << " ";
+        if (maxCandies <= candies[i])
+        {
+            maxCandies = candies[i];
+        }
+    }
+
+    // Add extraCandies to each candy and check if it's greater than or equal to maxCandies
+    for (int i = 0; i < candies.size(); ++i)
+    {
+        candies[i] = candies[i] + extraCandies;
+
+        if (maxCandies <= candies[i])
+        {
+            ans.push_back(true);
+        }
+        else
+        {
+            ans.push_back(false);
+        }
+    }
+
+    // Output the result
+    std::cout << "Result: [";
+    for (bool res : ans)
+    {
+        std::cout << (res ? "true" : "false") << ", ";
     }
     std::cout << "]" << std::endl;
 
